@@ -3,8 +3,7 @@ from result import Result
 from typing import Iterable
 
 class AverageReducer(Reducer):
-	@staticmethod
-	def reduce(results: Iterable[Result]) -> Result:
+	def reduce(self, results: Iterable[Result]) -> Result:
 		def avg(xs: Iterable[int]) -> int:
 			xs = list(xs)
 			return sum(xs) // len(xs)

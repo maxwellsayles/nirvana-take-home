@@ -15,7 +15,7 @@ class TestEndpoint(unittest.IsolatedAsyncioTestCase):
 		res2 = await m2.get()
 		res3 = await m3.get()
 
-		res = AverageReducer.reduce([res1, res2, res3])
+		res = AverageReducer().reduce([res1, res2, res3])
 		self.assertEqual(res.deductible, 1066)
 		self.assertEqual(res.stop_loss, 11000)
 		self.assertEqual(res.oop_max, 5666)

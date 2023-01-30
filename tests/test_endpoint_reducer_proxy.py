@@ -12,7 +12,7 @@ class TestEndpointReducerProxy(unittest.IsolatedAsyncioTestCase):
 		m2 = MockEndpoint2()
 		m3 = MockEndpoint3()
 
-		proxy = EndpointReducerProxy(AverageReducer, [m1, m2, m3])
+		proxy = EndpointReducerProxy(AverageReducer(), [m1, m2, m3])
 		res = await proxy.get()
 		self.assertEqual(res.deductible, 1066)
 		self.assertEqual(res.stop_loss, 11000)

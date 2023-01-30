@@ -3,7 +3,6 @@ from result import Result
 from typing import List
 
 class Reducer(ABC):
-	@staticmethod
 	@abstractmethod
-	def reduce(results: List[Result]) -> Result:
+	def reduce(self, results: List[Result]) -> Result:
 		...
