@@ -3,3 +3,10 @@ class Result(object):
 		self.deductible = deductible
 		self.stop_loss = stop_loss
 		self.oop_max = oop_max
+
+	def __repr__(self) -> str:
+		return '{{deductible: {0}, stop_loss: {1}, oop_max: {2}}}'.format(
+			self.deductible,
+			self.stop_loss,
+			self.oop_max,
+		)
