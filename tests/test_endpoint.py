@@ -2,7 +2,7 @@ import asyncio
 import unittest
 
 from result import Result
-from reducers.average import AverageReducer
+from reducers.average_reducer import AverageReducer
 from tests.mock_endpoint import *
 
 class TestEndpoint(unittest.IsolatedAsyncioTestCase):

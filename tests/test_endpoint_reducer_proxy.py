@@ -3,7 +3,7 @@ import unittest
 
 from endpoint_reducer_proxy import EndpointReducerProxy
 from result import Result
-from reducers.average import AverageReducer
+from reducers.average_reducer import AverageReducer
 from tests.mock_endpoint import *
 
 class TestEndpointReducerProxy(unittest.IsolatedAsyncioTestCase):

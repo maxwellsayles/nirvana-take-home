@@ -1,7 +1,7 @@
 import unittest
 
 from result import Result
-from reducers.average import AverageReducer
+from reducers.average_reducer import AverageReducer
 
 class TestAverageReducer(unittest.TestCase):
 	def runTest(self):
