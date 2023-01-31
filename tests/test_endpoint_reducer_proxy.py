@@ -10,11 +10,6 @@ from tests.mock_endpoint import *
 from typing import List
 
 class TestEndpointReducerProxy(unittest.IsolatedAsyncioTestCase):
-	def setUp(self):
-		self.endpoints = self.getMockEndpoints([(1000, 10000, 5000),
-												(1200, 13000, 6000),
-												(1000, 10000, 6000),
-												])
 
 	def getMockEndpoints(self,
 						 results: List[tuple[int, int, int]],
@@ -25,7 +20,11 @@ class TestEndpointReducerProxy(unittest.IsolatedAsyncioTestCase):
 		))
 
 	async def testAverage(self):
-		proxy = EndpointReducerProxy(AverageReducer(), self.endpoints)
+		endpoints = self.getMockEndpoints([(1000, 10000, 5000),
+										   (1200, 13000, 6000),
+										   (1000, 10000, 6000),
+										   ])
+		proxy = EndpointReducerProxy(AverageReducer(), endpoints)
 		res = await proxy.get()
 		self.assertEqual(res.deductible, 1066)
 		self.assertEqual(res.stop_loss, 11000)
@@ -44,7 +43,34 @@ class TestEndpointReducerProxy(unittest.IsolatedAsyncioTestCase):
 			else:
 				return res
 
-		proxy = EndpointReducerProxy(LambdaReducer(step), self.endpoints)
+		# Test smallest oop_max
+		endpoints = self.getMockEndpoints([
+			(1200, 10000, 5000),
+			(1100, 9000, 6000),
+		])
+		proxy = EndpointReducerProxy(LambdaReducer(step), endpoints)
+		res = await proxy.get()
+		self.assertEqual(res.deductible, 1200)
+		self.assertEqual(res.stop_loss, 10000)
+		self.assertEqual(res.oop_max, 5000)
+
+		# Test equal oop_max, smallest deductible
+		endpoints = self.getMockEndpoints([
+			(1000, 10000, 5000),
+			(1100, 9000, 5000),
+		])
+		proxy = EndpointReducerProxy(LambdaReducer(step), endpoints)
+		res = await proxy.get()
+		self.assertEqual(res.deductible, 1000)
+		self.assertEqual(res.stop_loss, 10000)
+		self.assertEqual(res.oop_max, 5000)
+
+		# Test equal oop_max, equal deductible, largest stop_loss
+		endpoints = self.getMockEndpoints([
+			(1000, 10000, 5000),
+			(1000, 9000, 5000),
+		])
+		proxy = EndpointReducerProxy(LambdaReducer(step), endpoints)
 		res = await proxy.get()
 		self.assertEqual(res.deductible, 1000)
 		self.assertEqual(res.stop_loss, 10000)
