@@ -21,7 +21,7 @@ The test suite provides a `MockEndpoint` that returns constant results. There ar
 - The `EndpointReducerProxy` uses `asyncio.gather` to make endpoint requests concurrently.
 - Combining results is functionally equivalent to reducing a collection to a single result, and this logic is already provided by `functools.reduce`. Technically, the framework could have been written to take a list of endpoints and a function for `functools.reduce` to combine results. However, I chose to provide an abstract `Reducer` class for several reasons: doing so explicitly encapsulates the logic for how to reduce a collection of results, makes the logic easily reusable, and exposes the complete collection for reduction (rather than as an acculator and single element).
   - However, for fun, I also provide a `LambdaReducer` that exposes the functionality of `functools.reduce` directly and allows you to write the reduction logic inline. (See the `testLambda` test in `test_endpoint_reducer_proxy.py` for an example.)
-- Unit tests are collocated with the code being tested (i.e. in a `tests` subdirectory of the module being tested). This encourages test creation and maintenance since they are more visible alongside code being written.
+- Unit tests are collocated with the code being tested (i.e. `tests` and `reducers/tests`). This encourages test creation and maintenance since they are more visible alongside code being written.
 
 
 ## Possible Considerations
