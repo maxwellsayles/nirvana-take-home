@@ -9,9 +9,9 @@ from tests.mock_endpoint import *
 
 class TestEndpointReducerProxy(unittest.IsolatedAsyncioTestCase):
 	def setUp(self):
-		m1 = MockEndpoint1()
-		m2 = MockEndpoint2()
-		m3 = MockEndpoint3()
+		m1 = MockEndpoint(1000, 10000, 5000)
+		m2 = MockEndpoint(1200, 13000, 6000)
+		m3 = MockEndpoint(1000, 10000, 6000)
 		self.endpoints = [m1, m2, m3]
 
 	async def testAverage(self):
