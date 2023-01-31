@@ -1,18 +1,28 @@
 import asyncio
 import unittest
 
+from endpoint import Endpoint
 from endpoint_reducer_proxy import EndpointReducerProxy
 from result import Result
 from reducers.average_reducer import AverageReducer
 from reducers.lambda_reducer import LambdaReducer
 from tests.mock_endpoint import *
+from typing import List
 
 class TestEndpointReducerProxy(unittest.IsolatedAsyncioTestCase):
 	def setUp(self):
-		m1 = MockEndpoint(1000, 10000, 5000)
-		m2 = MockEndpoint(1200, 13000, 6000)
-		m3 = MockEndpoint(1000, 10000, 6000)
-		self.endpoints = [m1, m2, m3]
+		self.endpoints = self.getMockEndpoints([(1000, 10000, 5000),
+												(1200, 13000, 6000),
+												(1000, 10000, 6000),
+												])
+
+	def getMockEndpoints(self,
+						 results: List[tuple[int, int, int]],
+						 ) -> List[Endpoint]:
+		return list(map(
+			lambda res: MockEndpoint(res[0], res[1], res[2]),
+			results,
+		))
 
 	async def testAverage(self):
 		proxy = EndpointReducerProxy(AverageReducer(), self.endpoints)
